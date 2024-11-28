@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- เพิ่มการกำหนดภาษาให้กับเอกสาร HTML -->
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="<%= content_for(:description) || 'Default description for webblog' %>">
+    <meta name="keywords" content="<%= content_for(:keywords) || 'blog, posts, web' %>">
+    <title><%= content_for(:title) || "Webblog" %></title>
+    
+    <%= csrf_meta_tags %> <!-- สำหรับความปลอดภัยของแอป -->
+    <%= csp_meta_tag %>
+
+    <%= yield :head %> <!-- สำหรับการเพิ่มข้อมูลใน head ที่เพิ่มเติมในแต่ละหน้า -->
+
+    <!-- PWA Manifest -->
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <!-- Stylesheets -->
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+    <!-- JavaScript -->
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-100"> <!-- กำหนดพื้นหลังของเว็บ -->
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-500 text-white p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <% if user_signed_in? %>
+          <p class="text-lg">Welcome .☘︎ ݁˖, <%= current_user.email %>!</p>
+          <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'text-white' %>
+        <% else %>
+          <%= link_to 'Sign Up', new_user_registration_path, class: 'text-white' %> |
+          <%= link_to 'Login', new_user_session_path, class: 'text-white' %>
+        <% end %>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto mt-28 px-5 flex">
+      <%= yield %> <!-- แสดงเนื้อหาของหน้า -->
+    </main>
+  </body>
+</html>
