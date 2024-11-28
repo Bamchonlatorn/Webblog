@@ -1,30 +1,15 @@
-class PostsController < ApplicationController 
+class PostsController < ApplicationController
   before_action :authenticate_user!  # ตรวจสอบให้แน่ใจว่าผู้ใช้ล็อกอินแล้ว
   before_action :set_post, only: [:show, :edit, :update, :destroy]  # กำหนดการตรวจสอบโพสต์ที่ต้องการแก้ไข, อัพเดต หรือ ลบ
   before_action :check_post_owner, only: [:edit, :update, :destroy]  # ตรวจสอบว่าเจ้าของโพสต์เป็นผู้ใช้ที่ล็อกอินอยู่
 
   def index
     # ถ้ามีคำค้นหาใน params[:search] ให้ทำการค้นหาโพสต์ที่มี title หรือ content ตรงกับคำค้น
-    if params[:search].present?
-      @posts = current_user.posts.where("title LIKE ? OR content LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
-    else
-      @posts = current_user.posts  # ดึงโพสต์ทั้งหมดของผู้ใช้ที่ล็อกอิน
-    end
-
-    @my_post = Post.find_by(title: 'My Post')  # ค้นหาโพสต์ที่มี title เป็น 'My Post'
-    
-    # ดึงข้อมูลจากผู้ใช้ที่มี id = 1
-    user = User.find(1)
-    @user_posts = user.posts  # ดึงโพสต์ทั้งหมดที่ผู้ใช้สร้าง
-
-    # ดึงโพสต์ที่มี id = 1
-    @post = Post.find(1)
-    
-    # ดึงคอมเม้นต์ทั้งหมดที่อยู่ใต้โพสต์นี้
-    @comments = @post.comments
-
-    # เพิ่มคอมเม้นต์ใหม่ใต้โพสต์
-    @new_comment = @post.comments.create(content: "Great post!", user_id: current_user.id)
+    @posts = if params[:search].present?
+               current_user.posts.where("title LIKE ? OR content LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
+             else
+               current_user.posts  # ดึงโพสต์ทั้งหมดของผู้ใช้ที่ล็อกอิน
+             end
   end
 
   def new
@@ -36,12 +21,15 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to @post, notice: 'Post was successfully created.'
     else
-      render :new
+      render :new  # ถ้ามีข้อผิดพลาดจะกลับไปที่หน้า new
     end
   end
 
   def show
-    # @post ถูกกำหนดแล้วใน before_action :set_post
+    @post = Post.find(params[:id])
+    @comments = @post.comments    # ดึงคอมเมนต์ทั้งหมดของโพสต์นี้
+    @like = Like.new
+
   end
 
   def edit
@@ -52,14 +40,20 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to @post, notice: 'Post was successfully updated.'
     else
-      render :edit
+      render :edit  # ถ้ามีข้อผิดพลาดจะกลับไปที่หน้า edit
     end
   end
 
   def destroy
-    @post.destroy
-    redirect_to posts_url, notice: 'Post was successfully destroyed.'
+    @post = Post.find(params[:id])
+    if @post.user == current_user
+      @post.destroy
+      redirect_to posts_url, notice: 'Post was successfully destroyed.'
+    else
+      redirect_to posts_url, alert: 'You are not authorized to delete this post.'
+    end
   end
+  
 
   private
 

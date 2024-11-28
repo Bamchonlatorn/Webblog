@@ -1,0 +1,39 @@
+<h1>Create a New Post</h1>
+
+<%= form_with(model: @post, local: true) do |form| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+        <% @post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: 'form-control' %>
+    <!-- แสดงข้อผิดพลาดถ้ามี -->
+    <div class="text-danger">
+      <%= @post.errors[:title].first if @post.errors[:title].present? %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :content %> <!-- แก้เป็น content -->
+    <%= form.text_area :content, class: 'form-control' %> <!-- แก้เป็น content -->
+    <!-- แสดงข้อผิดพลาดถ้ามี -->
+    <div class="text-danger">
+      <%= @post.errors[:content].first if @post.errors[:content].present? %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Create Post', class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to Posts', posts_path %> <!-- ลิงก์ไปยังหน้าโพสต์ทั้งหมด -->

@@ -1,9 +1,10 @@
+<!-- drghd-->
 <h1>Posts</h1>
 
 <%= form_with url: posts_path, method: :get, local: true do |f| %>
-    <%= f.text_field :search, value: params[:search], placeholder: "Search for posts..." %>
-    <%= f.submit "Search" %>
-  <% end %
+  <%= f.text_field :search, value: params[:search], placeholder: "Search for posts..." %>
+  <%= f.submit "Search" %>
+<% end %> <!-- เพิ่มการปิดฟอร์มที่หายไป -->
 
 <% @posts.each do |post| %>
   <h3><%= link_to post.title, post %></h3>
@@ -13,3 +14,4 @@
 <% end %>
 
 <%= link_to 'New Post', new_post_path %>
+

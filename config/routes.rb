@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
+  get "likes/create"
   devise_for :users
-  resources :posts do# สร้างเส้นทางทั้งหมดสำหรับ posts
+  resources :posts do
     resources :comments, only: [:create, :destroy]
+    resources :likes, only: [:create,  :destroy]
   end
   
+
   root to: 'posts#index'  # ตั้งค่าหน้าแรกของเว็บไซต์ให้เป็นโพสต์ทั้งหมด
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

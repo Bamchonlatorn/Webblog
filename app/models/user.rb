@@ -5,14 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
         
   # Associations
-  has_many :posts
-  has_many :comments
-  has_many :likes
-  
-  # Optional: หากต้องการความสัมพันธ์ที่เกี่ยวข้องกับการลบข้อมูลเช่นลบโพสต์หรือคอมเม้นต์เมื่อผู้ใช้ถูกลบ
-  # dependent: :destroy จะทำให้โพสต์หรือคอมเม้นต์ถูกลบเมื่อผู้ใช้ถูกลบ
-  has_many :posts, dependent: :destroy
-  has_many :comments, dependent: :destroy
-  has_many :likes, dependent: :destroy
+  has_many :posts, dependent: :destroy  # กำหนดความสัมพันธ์ว่าโพสต์จะถูกลบเมื่อผู้ใช้ถูกลบ
+  has_many :comments, dependent: :destroy  # คอมเม้นต์จะถูกลบเมื่อผู้ใช้ถูกลบ
+  has_many :likes, dependent: :destroy  # ไลค์จะถูกลบเมื่อผู้ใช้ถูกลบ
+  has_many :post_likes, dependent: :destroy
 
 end
