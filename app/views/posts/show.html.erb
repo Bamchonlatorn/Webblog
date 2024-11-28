@@ -3,6 +3,12 @@
 <p class="text-sm text-gray-500">Posted by: <%= @post.user.email %></p>
 
 <hr class="my-4">
+<h1><%= @post.title %></h1>
+<p><%= @post.content %></p>
+
+<% if user_signed_in? && @post.user == current_user %>
+  <%= link_to 'Edit Post', edit_post_path(@post), class: 'btn btn-warning' %>
+<% end %>
 
 <!-- ลิงก์ลบโพสต์ -->
 <% if @post.user == current_user %>

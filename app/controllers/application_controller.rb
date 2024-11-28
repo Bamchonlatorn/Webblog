@@ -1,8 +1,7 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!  # ตรวจสอบให้แน่ใจว่าผู้ใช้ล็อกอินแล้ว
+  before_action :authenticate_user!
   
-  # กำหนดหน้า redirect หลังจากล็อกอิน
-  def after_sign_in_path_for(resource)
-    posts_path  
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path  # ส่งกลับไปที่หน้าล็อกอิน
   end
 end

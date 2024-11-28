@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get "likes/create"
   devise_for :users
+
   resources :posts do
     resources :comments, only: [:create, :destroy]
     resources :likes, only: [:create,  :destroy]

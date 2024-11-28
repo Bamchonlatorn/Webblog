@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!  # ตรวจสอบให้แน่ใจว่าผู้ใช้ล็อกอินแล้ว
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update] # ตรวจสอบให้แน่ใจว่าผู้ใช้ล็อกอินแล้ว
   before_action :set_post, only: [:show, :edit, :update, :destroy]  # กำหนดการตรวจสอบโพสต์ที่ต้องการแก้ไข, อัพเดต หรือ ลบ
   before_action :check_post_owner, only: [:edit, :update, :destroy]  # ตรวจสอบว่าเจ้าของโพสต์เป็นผู้ใช้ที่ล็อกอินอยู่
 
