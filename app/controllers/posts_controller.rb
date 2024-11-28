@@ -4,13 +4,18 @@ class PostsController < ApplicationController
   before_action :check_post_owner, only: [:edit, :update, :destroy]  # ตรวจสอบว่าเจ้าของโพสต์เป็นผู้ใช้ที่ล็อกอินอยู่
 
   def index
-    # ถ้ามีคำค้นหาใน params[:search] ให้ทำการค้นหาโพสต์ที่มี title หรือ content ตรงกับคำค้น
-    @posts = if params[:search].present?
-               current_user.posts.where("title LIKE ? OR content LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
-             else
-               current_user.posts  # ดึงโพสต์ทั้งหมดของผู้ใช้ที่ล็อกอิน
-             end
+    if user_signed_in?
+      if params[:search].present?
+        @posts = current_user.posts.where("title LIKE ? OR content LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%")
+      else
+        @posts = current_user.posts  # ดึงโพสต์ทั้งหมดของผู้ใช้ที่ล็อกอิน
+      end
+    else
+      # Handle the case where the user is not logged in, for example, redirect to login page
+      redirect_to new_user_session_path, alert: "You need to sign in first."
+    end
   end
+  
 
   def new
     @post = Post.new  # สร้างโพสต์ใหม่
