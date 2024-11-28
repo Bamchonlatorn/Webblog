@@ -5,38 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="<%= content_for(:description) || 'Default description for webblog' %>">
-    <meta name="keywords" content="<%= content_for(:keywords) || 'blog, posts, web' %>">
-    <title><%= content_for(:title) || "Webblog" %></title>
+    <meta name="description" content="<%= content_for(:description) || 'Cyberpunk Webblog' %>">
+    <meta name="keywords" content="<%= content_for(:keywords) || 'cyberpunk, blog, futuristic' %>">
+    <title><%= content_for(:title) || "Cyberpunk Webblog" %></title>
     <%= csrf_meta_tags %> <!-- สำหรับความปลอดภัยของแอป -->
     <%= csp_meta_tag %>
     <%= yield :head %> <!-- สำหรับการเพิ่มข้อมูลใน head ที่เพิ่มเติมในแต่ละหน้า -->
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <!-- เพิ่มลิงก์ไปยังไฟล์ CSS สำหรับธีม Cyberpunk -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+      /* การตกแต่งสไตล์ Cyberpunk */
+      body {
+        font-family: 'Press Start 2P', sans-serif;
+        background-color: #0e0e0e; /* สีพื้นหลังดำ */
+        color: #d1d3d8; /* ข้อความสีอ่อน */
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Navigation Bar */
+      nav {
+        background-color: #ff00ff; /* สีม่วงฟ้า */
+        color: #fff;
+        border-bottom: 3px solid #00ffff; /* ขอบฟ้า */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      nav .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+      }
+
+      nav a {
+        color: #fff;
+        font-size: 18px;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+      }
+
+      nav a:hover {
+        color: #00ffff; /* ฟ้า */
+        text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+      }
+
+      /* Main Content */
+      main {
+        margin-top: 80px;
+        padding: 20px;
+        background-color: #121212; /* สีพื้นหลังมืด */
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+      }
+
+      /* หัวเรื่อง */
+      h1, h2, h3 {
+        color: #ff00ff; /* สีม่วงฟ้า */
+        font-size: 3rem;
+        text-shadow: 0 0 5px #00ffff, 0 0 15px #ff00ff;
+      }
+
+      /* ปุ่มสำหรับการล็อกอิน/ลงทะเบียน */
+      .submit-btn {
+        background-color: #00ffff; /* ฟ้า */
+        color: #121212; /* ดำ */
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        background-color: #ff00ff; /* สีม่วง */
+        color: #fff;
+        box-shadow: 0 0 15px #ff00ff;
+      }
+
+      /* เพิ่มภาพ Background เทคโนโลยี */
+      .background-cyberpunk {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('https://example.com/cyberpunk-background.jpg'); /* ลิงก์ภาพของ Cyberpunk */
+        background-size: cover;
+        z-index: -1;
+        opacity: 0.5;
+      }
+    </style>
   </head>
 
-  <body class="bg-gray-100">
-    <!-- Navigation Bar -->
-    <nav class="bg-blue-500 text-white p-4">
-      <div class="container mx-auto flex justify-between items-center">
+  <body>
+    <div class="background-cyberpunk"></div>
+
+    <nav>
+      <div class="container">
         <% if user_signed_in? %>
-          <p class="text-lg">Welcome .☘︎ ݁˖, <%= current_user.email %>!</p>
-          
-          <!-- ลิงก์ล็อกเอาท์ (Log Out) -->
+          <p>Welcome to the Cyberpunk Webblog, <%= current_user.email %>!</p>
           <%= form_for :logout, url: destroy_user_session_path, method: :delete do |f| %>
-            <%= f.submit 'Log Out', class: 'text-white' %>
+            <%= f.submit 'Log Out', class: 'submit-btn' %>
           <% end %> |
-          
-          <%= link_to 'New Post', new_post_path, class: 'text-white' %>
+          <%= link_to 'New Post', new_post_path, class: 'submit-btn' %>
         <% else %>
-          <%= link_to 'Sign Up', new_user_registration_path, class: 'text-white' %> |
-          <%= link_to 'Login', new_user_session_path, class: 'text-white' %>
+          <%= link_to 'Sign Up', new_user_registration_path, class: 'submit-btn' %> |
+          <%= link_to 'Login', new_user_session_path, class: 'submit-btn' %>
         <% end %>
       </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="container mx-auto mt-28 px-5 flex">
+    <main>
       <%= yield %>
     </main>
   </body>
