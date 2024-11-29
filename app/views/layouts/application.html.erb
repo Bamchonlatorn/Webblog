@@ -38,7 +38,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px;
+        height: 100px;
+        padding:0 20px;
       }
 
       nav a {
@@ -51,7 +52,7 @@
       }
 
       nav a:hover {
-        color: #00ffff; /* ฟ้า */
+        color: #5994ce; /* ฟ้า */
         text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
       }
 
@@ -97,7 +98,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url('https://example.com/cyberpunk-background.jpg'); /* ลิงก์ภาพของ Cyberpunk */
+        background-image: url('<%= asset_path("cyberpunk.jpg") %>');
         background-size: cover;
         z-index: -1;
         opacity: 0.5;
