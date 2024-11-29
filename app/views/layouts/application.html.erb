@@ -9,43 +9,43 @@
     <meta name="description" content="<%= content_for(:description) || 'Cyberpunk Webblog' %>">
     <meta name="keywords" content="<%= content_for(:keywords) || 'cyberpunk, blog, futuristic' %>">
     <title><%= content_for(:title) || "Cyberpunk Webblog" %></title>
-    <%= csrf_meta_tags %> <!-- สำหรับความปลอดภัยของแอป -->
+    <%= csrf_meta_tags %> 
     <%= csp_meta_tag %>
-    <%= yield :head %> <!-- สำหรับการเพิ่มข้อมูลใน head ที่เพิ่มเติมในแต่ละหน้า -->
+    <%= yield :head %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
-    <!-- เพิ่มลิงก์ไปยังไฟล์ CSS สำหรับธีม Cyberpunk -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
     <style>
-      /* การตกแต่งสไตล์ Cyberpunk */
+      /* Cyberpunk Theme Styles */
       body {
         font-family: 'Press Start 2P', sans-serif;
-        background-color: #0e0e0e; /* สีพื้นหลังดำ */
-        color: #d1d3d8; /* ข้อความสีอ่อน */
+        background-color: #0e0e0e;
+        color: #d1d3d8;
         margin: 0;
         padding: 0;
+        font-size: 16px;
+        line-height: 1.6;
       }
 
-      /* Navigation Bar */
       nav {
-        background-color: #ff00ff; /* สีม่วงฟ้า */
+        background-color: #ff00ff;
         color: #fff;
-        border-bottom: 3px solid #00ffff; /* ขอบฟ้า */
+        border-bottom: 3px solid #00ffff;
+        padding: 10px 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        padding: 20px 50px; /* ปรับ padding */
       }
 
       nav .container {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
-        height: 60px; /* ลดความสูงลง */
       }
 
       nav a {
         color: #fff;
-        font-size: 15px; /* แก้ขนาดฟอนต์ */
+        font-size: 15px;
         text-decoration: none;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -53,53 +53,51 @@
       }
 
       nav a:hover {
-        color: #5994ce; /* ฟ้า */
+        color: #5994ce;
         text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
       }
 
-      /* Main Content */
       main {
-        margin-top: 80px;
-        padding: 60px;
-        margin-left: 50px;
-        margin-right: 50px;
-        background-color: #121212; /* สีพื้นหลังมืด */
+        margin: auto;
+        padding: 40px;
+        width: 90%;
+        max-width: 1200px;
+        background-color: #121212;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        min-height: 80vh; /* ให้มีความสูงขั้นต่ำ */
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
       }
 
-      /* หัวเรื่อง */
       h1, h2, h3 {
-        color: #ff00ff; /* สีม่วงฟ้า */
+        color: #ff00ff;
         font-size: 3rem;
         text-shadow: 0 0 5px #00ffff, 0 0 15px #ff00ff;
       }
 
-      /* ปุ่มสำหรับการล็อกอิน/ลงทะเบียน */
-      .submit-btn {
-        background-color: #00ffff; /* ฟ้า */
-        color: #121212; /* ดำ */
-        padding: 10px 20px; /* เพิ่ม padding */
+      .submit-btn, .new-post-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        background-color: #00ffff;
+        color: #121212;
         border-radius: 5px;
+        border: none;
+        cursor: pointer;
         text-transform: uppercase;
         font-weight: bold;
-        cursor: pointer;
-        border: none;
+        margin: 10px 5px;
         transition: all 0.3s ease;
-        margin-top: 20px; /* ให้มีระยะห่างจากเนื้อหา */
       }
 
-      .submit-btn:hover {
-        background-color: #ff00ff; /* สีม่วง */
+      .submit-btn:hover, .new-post-btn:hover {
+        background-color: #007f7f;
         color: #fff;
-        box-shadow: 0 0 15px #ff00ff;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
       }
 
-      /* เพิ่มภาพ Background เทคโนโลยี */
       .background-cyberpunk {
         position: fixed;
         top: 0;
@@ -112,61 +110,81 @@
         opacity: 0.5;
       }
 
-      /* ปรับตำแหน่งปุ่มที่ด้านล่าง */
-      .auth-buttons {
+      .search-container {
         display: flex;
         justify-content: center;
-        margin-top: 30px;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
       }
 
-      .search-container {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-}
+      .search-input {
+        flex: 1;
+        max-width: 500px;
+        padding: 10px;
+        font-size: 16px;
+      }
 
-.search-input {
-  width: 80%;
-  padding: 10px;
-  font-size: 16px;
-}
+      .search-btn {
+        padding: 10px 20px;
+        background-color: #00ffff;
+        color: #121212;
+        border: none;
+        cursor: pointer;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
 
-.search-btn {
-  padding: 10px 20px;
-  background-color: #00ffff;
-  color: #121212;
-  border: none;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-weight: bold;
-}
+      .search-btn:hover {
+        background-color: #007f7f;
+      }
 
-.search-btn:hover {
-  background-color: #007f7f;
-}
+      .post-item {
+        background-color: #1c1c1c;
+        color: #d1d3d8;
+        padding: 20px;
+        margin: 15px auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 255, 255, 0.2);
+        width: 90%;
+        max-width: 800px;
+      }
 
-.post-item {
-  background-color: #f9f9f9;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+      .auth-buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 400px;
+        margin: 20px auto;
+      }
 
-.new-post-btn {
-  padding: 10px 20px;
-  background-color: #00ffff;
-  color: #121212;
-  border-radius: 5px;
-  text-transform: uppercase;
-  font-weight: bold;
-  margin-top: 20px;
-}
+      .auth-buttons a {
+        flex: 1;
+        text-align: center;
+      }
 
-.new-post-btn:hover {
-  background-color: #007f7f;
-}
+      .auth-buttons .submit-btn {
+        width: 100%;
+      }
 
+      @media (max-width: 768px) {
+        nav .container {
+          flex-direction: column;
+        }
+
+        .search-container {
+          flex-direction: column;
+        }
+
+        main {
+          padding: 20px;
+        }
+
+        .auth-buttons {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
     </style>
   </head>
 
@@ -175,30 +193,28 @@
 
     <nav>
       <div class="container">
-        <!-- ส่วนของเมนูหลัก เช่น Home, About -->
         <a href="/">Home</a>
         <a href="/about">About</a>
       </div>
     </nav>
 
     <main>
-      <!-- เนื้อหาหลักอื่นๆ -->
       <div class="container">
         <% if user_signed_in? %>
           <p>Welcome to the Cyberpunk Webblog, <%= current_user.email %>!</p>
           <%= form_for :logout, url: destroy_user_session_path, method: :delete do |f| %>
             <%= f.submit 'Log Out', class: 'submit-btn' %>
-          <% end %> |
-          <%= link_to 'New Post', new_post_path, class: 'submit-btn' %>
+          <% end %>
+          <%= link_to 'New Post', new_post_path, class: 'new-post-btn' %>
         <% else %>
           <div class="auth-buttons">
-            <%= link_to 'Sign Up', new_user_registration_path, class: 'submit-btn' %> |
+            <%= link_to 'Sign Up', new_user_registration_path, class: 'submit-btn' %>
             <%= link_to 'Login', new_user_session_path, class: 'submit-btn' %>
           </div>
         <% end %>
       </div>
-      
-      <%= yield %> <!-- ใส่เนื้อหาอื่นๆ -->
+
+      <%= yield %>
     </main>
   </body>
 </html>
