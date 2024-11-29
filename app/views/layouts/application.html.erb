@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <%= stylesheet_link_tag "sign_in", "data-turbo-track": "reload" %>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -32,19 +33,19 @@
         color: #fff;
         border-bottom: 3px solid #00ffff; /* ขอบฟ้า */
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        padding: 20px 50px; /* ปรับ padding */
       }
 
       nav .container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 100px;
-        padding:0 20px;
+        height: 60px; /* ลดความสูงลง */
       }
 
       nav a {
         color: #fff;
-        font-size: 18px;
+        font-size: 15px; /* แก้ขนาดฟอนต์ */
         text-decoration: none;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -59,10 +60,16 @@
       /* Main Content */
       main {
         margin-top: 80px;
-        padding: 20px;
+        padding: 60px;
+        margin-left: 50px;
+        margin-right: 50px;
         background-color: #121212; /* สีพื้นหลังมืด */
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 80vh; /* ให้มีความสูงขั้นต่ำ */
       }
 
       /* หัวเรื่อง */
@@ -76,13 +83,14 @@
       .submit-btn {
         background-color: #00ffff; /* ฟ้า */
         color: #121212; /* ดำ */
-        padding: 10px 20px;
+        padding: 10px 20px; /* เพิ่ม padding */
         border-radius: 5px;
         text-transform: uppercase;
         font-weight: bold;
         cursor: pointer;
         border: none;
         transition: all 0.3s ease;
+        margin-top: 20px; /* ให้มีระยะห่างจากเนื้อหา */
       }
 
       .submit-btn:hover {
@@ -103,6 +111,13 @@
         z-index: -1;
         opacity: 0.5;
       }
+
+      /* ปรับตำแหน่งปุ่มที่ด้านล่าง */
+      .auth-buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+      }
     </style>
   </head>
 
@@ -111,6 +126,15 @@
 
     <nav>
       <div class="container">
+        <!-- ส่วนของเมนูหลัก เช่น Home, About -->
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+      </div>
+    </nav>
+
+    <main>
+      <!-- เนื้อหาหลักอื่นๆ -->
+      <div class="container">
         <% if user_signed_in? %>
           <p>Welcome to the Cyberpunk Webblog, <%= current_user.email %>!</p>
           <%= form_for :logout, url: destroy_user_session_path, method: :delete do |f| %>
@@ -118,14 +142,14 @@
           <% end %> |
           <%= link_to 'New Post', new_post_path, class: 'submit-btn' %>
         <% else %>
-          <%= link_to 'Sign Up', new_user_registration_path, class: 'submit-btn' %> |
-          <%= link_to 'Login', new_user_session_path, class: 'submit-btn' %>
+          <div class="auth-buttons">
+            <%= link_to 'Sign Up', new_user_registration_path, class: 'submit-btn' %> |
+            <%= link_to 'Login', new_user_session_path, class: 'submit-btn' %>
+          </div>
         <% end %>
       </div>
-    </nav>
-
-    <main>
-      <%= yield %>
+      
+      <%= yield %> <!-- ใส่เนื้อหาอื่นๆ -->
     </main>
   </body>
 </html>
