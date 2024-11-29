@@ -2,16 +2,23 @@
 <h1>Posts</h1>
 
 <%= form_with url: posts_path, method: :get, local: true do |f| %>
-  <%= f.text_field :search, value: params[:search], placeholder: "Search for posts..." %>
-  <%= f.submit "Search" %>
-<% end %> <!-- เพิ่มการปิดฟอร์มที่หายไป -->
-
-<% @posts.each do |post| %>
-  <h3><%= link_to post.title, post %></h3>
-  <p><%= post.content %></p>
-  <p>Posted by: <%= post.user.email %></p>
-  <p><%= link_to 'Show', post_path(post) %></p>
+  <div class="search-container">
+    <%= f.text_field :search, value: params[:search], placeholder: "Search for posts...", class: "search-input" %>
+    <%= f.submit "Search", class: "search-btn" %>
+  </div>
 <% end %>
 
-<%= link_to 'New Post', new_post_path %>
+<% if @posts.empty? %>
+  <p>No posts found matching your search criteria.</p>
+<% else %>
+  <% @posts.each do |post| %>
+    <div class="post-item">
+      <h3><%= link_to post.title, post %></h3>
+      <p><%= post.content %></p>
+      <p>Posted by: <%= post.user.email %></p>
+      <p><%= link_to 'Show', post_path(post) %></p>
+    </div>
+  <% end %>
+<% end %>
 
+<%= link_to 'New Post', new_post_path, class: "new-post-btn" %>
