@@ -21,6 +21,8 @@
       /* Cyberpunk Theme Styles */
       body {
         font-family: 'Press Start 2P', sans-serif;
+        background-image: url('<%= asset_path("cyberpunk.jpg") %>');
+        background-size: cover;
         background-color: #0e0e0e;
         color: #d1d3d8;
         margin: 0;
@@ -39,6 +41,7 @@
 
       nav .container {
         display: flex;
+
         justify-content: space-around;
         align-items: center;
       }
@@ -61,7 +64,7 @@
         margin: auto;
         padding: 40px;
         width: 90%;
-        max-width: 1200px;
+        max-width: 600px;
         background-color: #121212;
         border-radius: 10px;
         box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
@@ -180,11 +183,9 @@
           padding: 20px;
         }
 
-        .auth-buttons {
-          flex-direction: column;
-          gap: 10px;
-        }
-      }
+  
+
+        
     </style>
   </head>
 
@@ -199,22 +200,24 @@
     </nav>
 
     <main>
-      <div class="container">
-        <% if user_signed_in? %>
-          <p>Welcome to the Cyberpunk Webblog, <%= current_user.email %>!</p>
-          <%= form_for :logout, url: destroy_user_session_path, method: :delete do |f| %>
-            <%= f.submit 'Log Out', class: 'submit-btn' %>
-          <% end %>
-          <%= link_to 'New Post', new_post_path, class: 'new-post-btn' %>
-        <% else %>
-          <div class="auth-buttons">
-            <%= link_to 'Sign Up', new_user_registration_path, class: 'submit-btn' %>
-            <%= link_to 'Login', new_user_session_path, class: 'submit-btn' %>
-          </div>
+    <div class="container">
+      <% if user_signed_in? %>
+        <p>Welcome to the Cyberpunk Webblog, <%= current_user.email %>!</p>
+        <%= form_for :logout, url: destroy_user_session_path, method: :delete do |f| %>
+          <%= f.submit 'Log Out', class: 'submit-btn' %>
         <% end %>
-      </div>
+        <%= link_to 'New Post', new_post_path, class: 'new-post-btn' %>
+      <% else %>
+        <div class="auth-buttons">
+          <%= link_to 'Sign Up', new_user_registration_path, class: 'submit-btn' %>
+          <%= link_to 'Login', new_user_session_path, class: 'submit-btn' %>
+        </div>
 
-      <%= yield %>
-    </main>
+      <% end %>
+
+</div>
+
+    <%= yield %>
+  </main>
   </body>
 </html>
